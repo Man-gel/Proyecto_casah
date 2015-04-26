@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Usuario
+ * Copyright (C) 2015 Man-gel
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@ package proy_casah;
 
 /**
  *
- * @author Usuario
+ * @author Man-gel
  */
 public class Articulo extends javax.swing.JDialog {
 
@@ -47,6 +47,8 @@ public class Articulo extends javax.swing.JDialog {
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jToolBar1 = new javax.swing.JToolBar();
+        labelAviso = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Artículo");
@@ -62,12 +64,34 @@ public class Articulo extends javax.swing.JDialog {
         jScrollPane1.setViewportView(jTextArea1);
 
         jTextField1.setFont(new java.awt.Font("Monospaced", 0, 13)); // NOI18N
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton1.setText("Agregar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jToolBar1.setBorder(null);
+        jToolBar1.setFloatable(false);
+        jToolBar1.setRollover(true);
+
+        labelAviso.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jToolBar1.add(labelAviso);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -76,6 +100,11 @@ public class Articulo extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -83,13 +112,9 @@ public class Articulo extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
-                            .addComponent(jTextField1)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
+                            .addComponent(jTextField1))))
                 .addContainerGap())
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,11 +133,35 @@ public class Articulo extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap())
+                .addGap(4, 4, 4)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String cols[] = {"pnombre","descripcion"};
+        String vals[] = {jTextField1.getText(),jTextArea1.getText()};
+        if(BaseDatos.insertar("producto", cols, vals)){
+            labelAviso.setText("INGRESADO");
+            jTextField1.setText("");
+            jTextArea1.setText("");
+            Sis.limpiarTabla(Principal.modeloTabla, Principal.tablaArticulos);
+            String[] t = {"No.","Artículo"};
+            Principal.tablaArticulos.setModel(Sis.refrescarModelo("SELECT * FROM Producto",3, t) );
+            Principal.colDesc = BaseDatos.consultarVarios("SELECT descripcion FROM producto", 1);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        if(labelAviso.getText().equals("INGRESADO"))
+            labelAviso.setText("");
+    }//GEN-LAST:event_jTextField1KeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -122,5 +171,7 @@ public class Articulo extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JLabel labelAviso;
     // End of variables declaration//GEN-END:variables
 }

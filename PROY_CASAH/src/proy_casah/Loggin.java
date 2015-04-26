@@ -169,16 +169,22 @@ public class Loggin extends java.awt.Frame {
         for(char let : pa){
             pw = pw + let;
         }
-        String consulta[] = BaseDatos.consultarRegistro("SELECT * FROM usuarios WHERE user = '"+us+"'", 5);
-        if(consulta == null){
-            passPF.setText("");
+        if(Sis.textoInseguro(us) || Sis.textoInseguro(pw)){
+            JOptionPane.showMessageDialog(this, "¿Qué intentas?\nAlgunos caracteres introducidos se consideran inseguros para el sistema.");passPF.setText("");
             userTF.setText("");
             userTF.grabFocus();
-            JOptionPane.showMessageDialog(this, "El usuario y/o contraseña son incorrectos \ny/o se ha generado una excepción.");
             return;
         }
-        if(consulta[1].equals(us) && consulta[2].equals(pw)){
-            Principal.usuario = consulta[4];
+        String consulta[] = BaseDatos.consultarRegistro("SELECT * FROM usuarios WHERE user = '"+us+"'", 5);
+        if(consulta[1] == null){
+           JOptionPane.showMessageDialog(this, "El usuario y/o contraseña son incorrectos \ny/o se ha generado una excepción."); 
+            passPF.setText("");
+            userTF.setText("");
+            userTF.grabFocus();            
+            return;
+        }
+        if(consulta[1].equals(us) && consulta[4].equals(pw)){
+            Principal.usuario = consulta[3];
             Principal.ini.doClick(100);
             this.exitForm(null);
         }else{

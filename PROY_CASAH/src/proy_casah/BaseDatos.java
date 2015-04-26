@@ -1,4 +1,20 @@
-
+/*
+ * Copyright (C) 2015 Man-gel
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
 package proy_casah;
 import java.sql.*;
 import javax.swing.*;
@@ -25,31 +41,43 @@ public class BaseDatos {
                 return false;
             }
         }catch (ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog( null, ex.getMessage() );
+            JOptionPane.showMessageDialog( null,"Class Not Found Exception:\n"+ex.getMessage() );
             return false;
         }catch(SQLException e){
-            JOptionPane.showMessageDialog( null, "SQL: "+e.getMessage() );
+            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+e.getMessage() );
             return false;
         }catch(Exception e){
-            JOptionPane.showMessageDialog( null, e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
             return false;
         }
         return true;        
     }
     
     public static Boolean desconectar(){
+        String ex = "";
         if(con != null && stmt != null){
-        try {
-            con.close();
-            stmt.close();
-            con = null;
-            stmt = null;
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, e.getMessage() );
-            return false;
-        }finally{
-            return true; 
-        }
+            try {
+                if(con != null &&!con.isClosed()){
+                    ex = "connection";
+                    con.close();
+                }                    
+                if(stmt != null && !stmt.isClosed()){
+                    ex = "statement";
+                    stmt.close();
+                }
+                if(rSet != null && !rSet.isClosed()){
+                    ex = "resultSet";
+                    rSet.close();
+                }   
+                con = null;
+                stmt = null;
+                rSet = null;
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog( null, "Exception '"+ex+"':\n"+e.getMessage() );
+                return false;
+            }finally{
+                return true; 
+            }
         }
         return false;
     }
@@ -76,18 +104,49 @@ public class BaseDatos {
             stmt.executeUpdate("INSERT INTO "+tabla+" ("+cols+")VALUES(" + values + ")");
             return true;
         } catch (SQLException sqlE) {
-            JOptionPane.showMessageDialog( null, "SQL: "+sqlE.getMessage() );
+            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+sqlE.getMessage() );
             return false;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
             return false;
         } finally {
             desconectar();
         }
     }
     
+    public static ArrayList<ArrayList> consultarVarios(String query,Integer campos){
+        ArrayList<ArrayList> consulta = new ArrayList<ArrayList>();
+        ArrayList<String> fila = new ArrayList<String>();
+        try {                                        
+            conectar();
+            stmt = con.createStatement();
+            rSet = stmt.executeQuery(query);
+            while (rSet.next()) {
+                for(int idx = 0; idx < campos; idx++){
+                    fila.add( rSet.getString(idx+1) );
+                }
+                consulta.add(new ArrayList(fila));
+                fila.clear();
+            }
+            return consulta;
+        } catch (SQLException sqlE) {
+            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+sqlE.getMessage() );
+            return null;
+        } catch (Exception sqlE) {
+            JOptionPane.showMessageDialog( null, "Exception:\n"+sqlE.getMessage() );
+            return null;
+        } finally {
+            desconectar();            
+        }        
+    }
+    
     public static DefaultTableModel consultar(String query, Integer campos,String[] titulos) { //DEVUELVE NULL Si excepcion , DefaultTableModel al terminar.
-        DefaultTableModel obj = new DefaultTableModel(null,titulos);
+        DefaultTableModel obj = new DefaultTableModel(null,titulos){
+            @Override
+            public boolean isCellEditable(int r, int c){
+                return false;
+            }
+        };
         try {                                                                   
             String array[] = new String[campos];
             conectar();
@@ -98,15 +157,15 @@ public class BaseDatos {
                     array[idx] = rSet.getString(idx+1);
                 obj.addRow(array);
             }
+            return obj;
         } catch (SQLException sqlE) {
-            JOptionPane.showMessageDialog( null, "SQL: "+sqlE.getMessage() );
+            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+sqlE.getMessage() );
             return null;
         } catch (Exception sqlE) {
-            JOptionPane.showMessageDialog( null, sqlE.getMessage() );
+            JOptionPane.showMessageDialog( null, "Exception:\n"+sqlE.getMessage() );
             return null;
         } finally {
-            desconectar();
-            return obj;
+            desconectar();            
         }       
     }
     
@@ -123,17 +182,15 @@ public class BaseDatos {
                     if(idx == 0)
                         id = rSet.getInt(idx+1);
                     array[idx] = rSet.getString(idx+1);
-                    JOptionPane.showMessageDialog(null, "idx: "+idx+"\narray[idx[: "+array[idx]);
-            
                 }                
-                obj.putIfAbsent(id,array);
+                obj.put(id,array);
             }
             return obj;
         } catch (SQLException sqlE) {
-            JOptionPane.showMessageDialog( null, "SQL: "+sqlE.getMessage() );
+            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+sqlE.getMessage() );
             return null;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
             return null;
         } finally {
             desconectar();            
@@ -142,44 +199,69 @@ public class BaseDatos {
     
     public static String[] consultarRegistro(String query, Integer nCampos) { 
         try {                                                                      
-            String array[] = null;
+            String[] tupla = new String[nCampos];
             conectar();
             stmt = con.createStatement();
             rSet = stmt.executeQuery(query);
             while (rSet.next()) {
-                array = new String[nCampos];
                 for(int idx = 0; idx < nCampos;idx++)
-                    array[idx] = rSet.getString(idx+1);
+                    tupla[idx] = rSet.getString(idx+1);
             }
             desconectar();
-            return array;
+            return tupla;
         } catch (SQLException es) {
-            JOptionPane.showMessageDialog( null, "SQL: "+es.getMessage() );
+            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+es.getMessage() );
             return null;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
             return null;
         } finally {
             desconectar();
         }       
     }
     
-     public static String consultarCampo(String tabla, String campo, String nombreId,String id) { 
+     public static ArrayList<String[]> consultarLista (String query, Integer nCampos) { 
+        try {                                                                      
+            ArrayList<String[]> tuplas = new ArrayList<String[]>();
+            conectar();
+            stmt = con.createStatement();
+            rSet = stmt.executeQuery(query);
+            while (rSet.next()) {
+                String[] tupla = new String[nCampos];
+                for(int idx = 0; idx < nCampos;idx++)
+                    tupla[idx] = rSet.getString(idx +1);
+                tuplas.add( tupla );
+            }
+            desconectar();
+            return tuplas;
+        } catch (SQLException es) {
+            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+es.getMessage() );
+            return null;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
+            return null;
+        } finally {
+            desconectar();
+        }       
+    }
+    
+     public static String consultarCampo(String tabla, String campo, String llave,String valor) { 
+        String query = "SELECT "+campo+" FROM "+tabla+" WHERE "+llave+" = '"+valor+"'";
         try {
             String consulta = null;
             conectar();
             stmt = con.createStatement();
-            rSet = stmt.executeQuery("SELECT "+campo+" FROM "+tabla+" WHERE "+nombreId+" = '"+id+"'" );
+            rSet = stmt.executeQuery(query);
             while (rSet.next()) {
                 consulta = rSet.getString(campo);
             }
             desconectar();
             return consulta;
         } catch (SQLException es) {
-            JOptionPane.showMessageDialog( null, "SQL: "+es.getMessage() );
+            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+es.getMessage() );
             return null;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
             return null;
         } finally {
             desconectar();
@@ -193,10 +275,10 @@ public class BaseDatos {
             Integer res = stmt.executeUpdate("DELETE FROM "+tabla+" WHERE `"+nombreId+"` = '" + id + "'");
             return res;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog( null, "SQL: "+e.getMessage() );
+            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+e.getMessage() );
             return -1;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
             return -2;
         } finally {
             desconectar();            
@@ -211,10 +293,10 @@ public class BaseDatos {
             int res = stmt.executeUpdate(updateStmt);
             return res;
         } catch (SQLException sqlE) {
-            JOptionPane.showMessageDialog( null, "SQL: "+sqlE.getMessage() );
+            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+sqlE.getMessage() );
             return 0;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
             return 0;
         }
     }

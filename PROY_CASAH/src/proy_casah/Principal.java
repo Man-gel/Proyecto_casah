@@ -1,8 +1,28 @@
+/*
+ * Copyright (C) 2015 Man-gel
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
 package proy_casah;
 
+import java.awt.event.KeyEvent;
 import java.sql.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import java.util.*;
+import javafx.scene.input.KeyCode;
 /**
  *
  * @author Man-gel
@@ -43,6 +63,9 @@ public class Principal extends Sis {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         descripcionTA = new javax.swing.JTextArea();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
         barraMenu = new javax.swing.JMenuBar();
         menuIniciar = new javax.swing.JMenu();
         itemIsesion = new javax.swing.JMenuItem();
@@ -84,9 +107,10 @@ public class Principal extends Sis {
         jLabel1.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 18)); // NOI18N
         jLabel1.setText("Artículos");
 
-        modeloTabla = BaseDatos.consultar("SELECT * FROM producto", 2, titulos);
+        modeloTabla = BaseDatos.consultar("SELECT * FROM producto", 3, titulos);
         tablaArticulos.setModel(modeloTabla);
-        tablaArticulos.getColumnModel().getColumn(0).setPreferredWidth(20);
+        tablaArticulos.getColumnModel().getColumn(0).setPreferredWidth(3);
+        colDesc = BaseDatos.consultarVarios("SELECT descripcion FROM producto", 1);
         tablaArticulos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaArticulosMouseClicked(evt);
@@ -117,12 +141,24 @@ public class Principal extends Sis {
         fechaUSalTF.setEditable(false);
         fechaUSalTF.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton1.setText("Historial");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton2.setText("Historial");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 18)); // NOI18N
-        jLabel2.setText("Historial Existencias");
+        jLabel2.setText("Historial");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -145,48 +181,66 @@ public class Principal extends Sis {
         descripcionTA.setRows(5);
         jScrollPane3.setViewportView(descripcionTA);
 
+        jLabel7.setText("Año-Mes-Día");
+
+        jTextField1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+
+        jLabel8.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 14)); // NOI18N
+        jLabel8.setText("Filtrar");
+
         javax.swing.GroupLayout principalPLayout = new javax.swing.GroupLayout(principalP);
         principalP.setLayout(principalPLayout);
         principalPLayout.setHorizontalGroup(
             principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(principalPLayout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
+                .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(principalPLayout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(100, 100, 100)
-                        .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(principalPLayout.createSequentialGroup()
-                                .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(principalPLayout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(29, 29, 29)
-                                        .addComponent(fechaUEntTF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(principalPLayout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(cantidadTF, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, principalPLayout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(fechaUSalTF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(42, 42, 42)
-                                .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton1)
-                                    .addComponent(jButton2)))
-                            .addGroup(principalPLayout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane3))))
-                    .addComponent(jScrollPane1))
-                .addContainerGap(61, Short.MAX_VALUE))
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel1)
+                        .addGroup(principalPLayout.createSequentialGroup()
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(principalPLayout.createSequentialGroup()
+                                    .addGap(100, 100, 100)
+                                    .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(principalPLayout.createSequentialGroup()
+                                            .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addGroup(principalPLayout.createSequentialGroup()
+                                                    .addComponent(jLabel3)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(cantidadTF, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, principalPLayout.createSequentialGroup()
+                                                    .addComponent(jLabel5)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(fechaUSalTF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(principalPLayout.createSequentialGroup()
+                                                    .addComponent(jLabel4)
+                                                    .addGap(29, 29, 29)
+                                                    .addComponent(fechaUEntTF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addGap(42, 42, 42)
+                                            .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jButton1)
+                                                .addComponent(jButton2)))
+                                        .addGroup(principalPLayout.createSequentialGroup()
+                                            .addComponent(jLabel6)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jScrollPane3))))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, principalPLayout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel7)
+                                    .addGap(141, 141, 141))))
+                        .addComponent(jScrollPane1)))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         principalPLayout.setVerticalGroup(
             principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(principalPLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,7 +257,9 @@ public class Principal extends Sis {
                             .addComponent(jLabel4)
                             .addComponent(fechaUEntTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1))
-                        .addGap(29, 29, 29)
+                        .addGap(9, 9, 9)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(fechaUSalTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -214,7 +270,11 @@ public class Principal extends Sis {
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addGap(10, 10, 10)
+                .addGroup(principalPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         barraMenu.setMaximumSize(new java.awt.Dimension(96, 32769));
@@ -274,7 +334,8 @@ public class Principal extends Sis {
         menuArticulo.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
 
         itemCArticulo.setMnemonic('o');
-        itemCArticulo.setText("Filtrar consulta");
+        itemCArticulo.setText("Editar / Eliminar");
+        itemCArticulo.setEnabled(false);
         menuArticulo.add(itemCArticulo);
 
         itemAgArticulo.setMnemonic('g');
@@ -399,6 +460,8 @@ public class Principal extends Sis {
     }//GEN-LAST:event_itemIsesionActionPerformed
 
     private void itemCsesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCsesionActionPerformed
+        Sis.limpiarTabla(modeloTabla, tablaArticulos);
+        Sis.limpiarTabla(modeloTabla, jTable1);
         ini.doClick();
     }//GEN-LAST:event_itemCsesionActionPerformed
 
@@ -453,18 +516,10 @@ public class Principal extends Sis {
             itemNSalidas.setEnabled(SesionIniciada);
         }
     }//GEN-LAST:event_iniActionPerformed
-
-    private void tablaArticulosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaArticulosKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tablaArticulosKeyPressed
-
-    private void tablaArticulosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaArticulosMouseClicked
-        int fila = tablaArticulos.getSelectedRow();
-        mostrarFilaSeleccionada(fila);
-    }//GEN-LAST:event_tablaArticulosMouseClicked
-
+    
     private void itemAgUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAgUsuarioActionPerformed
        Usuario dialog = new Usuario(new javax.swing.JFrame(), true);
+       dialog.jButton1.setText("Insertar");
        dialog.setLocationRelativeTo(this);
        dialog.setVisible(true);
     }//GEN-LAST:event_itemAgUsuarioActionPerformed
@@ -499,13 +554,60 @@ public class Principal extends Sis {
         sal.setVisible(true);
     }//GEN-LAST:event_itemNSalidasActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(id_prod == -1)
+        JOptionPane.showMessageDialog(this, "Seleccione un artículo de la tabla");
+        else{
+
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if(id_prod == -1)
+        JOptionPane.showMessageDialog(this, "Seleccione un artículo de la tabla");
+        else{
+
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void tablaArticulosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaArticulosKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
+            if (tablaArticulos.getSelectedRow() > 0) {
+                int filaSel = tablaArticulos.getSelectedRow() - 1;
+                id_prod = filaSel;
+                mostrarFilaSeleccionada(filaSel);
+            } else {
+                int filaSel = tablaArticulos.getSelectedRow();
+                id_prod = filaSel;
+                mostrarFilaSeleccionada(filaSel);
+            }
+        } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+            if (tablaArticulos.getSelectedRow() < tablaArticulos.getRowCount() - 1) {
+                int filaSel = tablaArticulos.getSelectedRow() + 1;
+                id_prod = filaSel;
+                mostrarFilaSeleccionada(filaSel);
+            } else {
+                int filaSel = tablaArticulos.getSelectedRow();
+                id_prod = filaSel;
+                mostrarFilaSeleccionada(filaSel);
+            }
+        }
+    }//GEN-LAST:event_tablaArticulosKeyPressed
+
+    private void tablaArticulosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaArticulosMouseClicked
+        int fila = tablaArticulos.getSelectedRow();
+        id_prod = fila;
+        mostrarFilaSeleccionada(fila);
+    }//GEN-LAST:event_tablaArticulosMouseClicked
+
     private void mostrarFilaSeleccionada(int fila) {
         String colCantidad = tablaArticulos.getValueAt(fila, 0).toString();
         String colFechaE = tablaArticulos.getValueAt(fila, 1).toString();
-        //String colFechaS = tablaArticulos.getValueAt(fila, 2).toString();
+        //JOptionPane.showMessageDialog(this, "fila: "+fila +"\ncolDesc.get(fila).get(0):"+colDesc.get(fila).get(0).toString());
         cantidadTF.setText(colCantidad);
         fechaUEntTF.setText(colFechaE);
         fechaUSalTF.setText("NO DISPONIBLE"/*colFechaS*/);
+        descripcionTA.setText(colDesc.get(fila).get(0).toString());
     }
     /**
      * @param args the command line arguments
@@ -545,9 +647,11 @@ public class Principal extends Sis {
     }
     //Mis variables de control
     public static boolean SesionIniciada;
-    public static String usuario; 
-    String titulos[] = {"No","Artículo" };
-    private DefaultTableModel modeloTabla;
+    public static String usuario;
+    private static String[] titulos = {"No","Descripción"}; 
+    public static DefaultTableModel modeloTabla;
+    public static ArrayList<ArrayList> colDesc;
+    private static int id_prod = -1;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar barraMenu;
@@ -576,10 +680,13 @@ public class Principal extends Sis {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JMenu menuArticulo;
     private javax.swing.JMenu menuEntradas;
     private javax.swing.JMenu menuIniciar;
@@ -587,7 +694,7 @@ public class Principal extends Sis {
     private javax.swing.JMenu menuSalidas;
     private javax.swing.JMenu menuUsuarios;
     private javax.swing.JPanel principalP;
-    private javax.swing.JTable tablaArticulos;
+    public static javax.swing.JTable tablaArticulos;
     // End of variables declaration//GEN-END:variables
 }
 

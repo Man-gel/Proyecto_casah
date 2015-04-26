@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Usuario
+ * Copyright (C) 2015 Man-gel
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Usuario
+ * @author Man-gel
  */
 public class Usuario extends javax.swing.JDialog {
 
@@ -78,6 +78,7 @@ public class Usuario extends javax.swing.JDialog {
         jLabel5.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 14)); // NOI18N
         jLabel5.setText("Permisos");
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton1.setText("Guardar");
         jButton1.setNextFocusableComponent(jButton2);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -86,6 +87,7 @@ public class Usuario extends javax.swing.JDialog {
             }
         });
 
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton2.setText("Cancelar");
         jButton2.setNextFocusableComponent(jTextField2);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -113,6 +115,16 @@ public class Usuario extends javax.swing.JDialog {
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Usuario", "Administrador" }));
         jComboBox1.setSelectedItem(2);
         jComboBox1.setNextFocusableComponent(jButton1);
+        jComboBox1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jComboBox1FocusLost(evt);
+            }
+        });
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jPasswordField1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jPasswordField1.setNextFocusableComponent(jPasswordField2);
@@ -130,6 +142,7 @@ public class Usuario extends javax.swing.JDialog {
             }
         });
 
+        jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
         mensajeLbl.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
@@ -208,87 +221,143 @@ public class Usuario extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
-        if(Sis.textoInseguro(jTextField2.getText())){
-            JOptionPane.showMessageDialog(this,"Algunos caracteres no son permitidos por seguridad del sistema.\n';' o '\\'.");
-            jTextField2.setText("");
-            jTextField2.grabFocus();
-        }                                           
-    }//GEN-LAST:event_jTextField2FocusLost
-
-    private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
-       if(Sis.textoInseguro(jTextField1.getText())){
-            JOptionPane.showMessageDialog(this,"Algunos caracteres no son permitidos por seguridad del sistema.\n';' o '\\'.");
-            jTextField1.setText("");
-            jTextField1.grabFocus();
-        }         
-    }//GEN-LAST:event_jTextField1FocusLost
-
     private void jPasswordField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField1FocusLost
         char p1[] = jPasswordField1.getPassword();
         for(char c : p1)
             pass1 = pass1 + c;
-        if( Sis.textoInseguro(pass1) ){
-            JOptionPane.showMessageDialog(this,"Algunos caracteres no son permitidos por seguridad del sistema.\n';' o '\\'.");
-            jTextField1.setText("");
-            jTextField1.grabFocus();
-            return;
-        }      
+        passCambiado = pass1;
+        if(!passCambiado.equals(passOriginal))
+            jButton1.setEnabled(true);      
     }//GEN-LAST:event_jPasswordField1FocusLost
 
     private void jPasswordField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField2FocusLost
         char p2[] = jPasswordField2.getPassword();
         for(char c : p2)
             pass2 = pass2 + c;
-        if( Sis.textoInseguro(pass2) ){
-            JOptionPane.showMessageDialog(this,"Algunos caracteres no son permitidos por seguridad del sistema.\n';' o '\\'.");
-            jTextField1.setText("");
-            jTextField1.grabFocus();
-            return;
-        }
         if(!Sis.passIguales(pass1, pass2)){
             JOptionPane.showMessageDialog(this,"Las contraseñas no coinciden");
+            pass1 = "";
+            pass2 = "";
             jPasswordField1.setText("");
             jPasswordField2.setText("");
-            jPasswordField1.grabFocus();
+            jPasswordField1.grabFocus();            
             return;
         }
+        passCambiado = pass2;
+        if(!passCambiado.equals(passOriginal))
+            jButton1.setEnabled(true);
     }//GEN-LAST:event_jPasswordField2FocusLost
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        String valores[] = {jTextField1.getText(),pass2,jTextField2.getText(),jComboBox1.getSelectedItem().toString()};
        String columnas[] = {"user","password","unombre","permisos"};
-       JOptionPane.showMessageDialog(this, "User: "+jTextField1.getText());
-            
-        if(Sis.usuarioYaExiste(jTextField1.getText())){
-            JOptionPane.showMessageDialog(this, "USUARIO YA EXISTE");
-            int res = 0;
-            BaseDatos.conectar();
-            for(int i = 0; i < valores.length;i++)
-                res += BaseDatos.actualizar("usuarios",columnas[0],userOriginal,columnas[i],valores[i]);
-            BaseDatos.desconectar();
-            if(res != 0)
-                mensajeLbl.setText("GUARDADOS: "+res);
-            else
-                mensajeLbl.setText("OCURRIÓ UN ERROR");            
-        }else{
-            JOptionPane.showMessageDialog(this, "USUARIO NO EXISTE");
-            if( BaseDatos.insertar("usuarios",columnas,valores) )
-                mensajeLbl.setText("GUARDADO");
-            else
-                mensajeLbl.setText("OCURRIÓ UN ERROR");
+       for(String v : valores){
+           if(v.length() == 0){
+               JOptionPane.showMessageDialog(this, "Debe completar todos los campos");
+               return;
+           }
+       }
+       if( jPasswordField1.getText().isEmpty() ){
+           JOptionPane.showMessageDialog(this, "Debe completar todos los campos");
+           return;
+       }
+        if(Sis.textoInseguro(jTextField1.getText()) || Sis.textoInseguro(pass1) || Sis.textoInseguro(jTextField2.getText()) || Sis.textoInseguro(pass2)){
+            JOptionPane.showMessageDialog(this, "¿Qué intentas?\nAlgunos caracteres introducidos se consideran inseguros para el sistema.");
+            jPasswordField2.setText("");
+            jPasswordField1.setText("");
+            jTextField1.setText("");
+            jTextField1.setText("");
+            jTextField1.grabFocus();
+            return;
         }
-                
+        if(jButton1.getText().equals("Insertar")){
+            if(Sis.usuarioYaExiste(jTextField1.getText())){
+                JOptionPane.showMessageDialog(this, "ESTE USUARIO YA EXISTE");
+                return;         
+            }else{
+                if( BaseDatos.insertar("usuarios",columnas,valores) )
+                    mensajeLbl.setText("GUARDADO");
+                else
+                    mensajeLbl.setText("OCURRIÓ UN ERROR AL GUARDAR"); 
+            }            
+        }else if(jButton1.getText().equals("Guardar")){
+            int afectadas = actualizar(valores,columnas);
+            if( afectadas != 0)
+                    mensajeLbl.setText("GUARDADO");
+            else
+                mensajeLbl.setText("OCURRIÓ UN ERROR AL GUARDAR"); 
+        }                     
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
+        unombreCambiado = jTextField2.getText();
+        if(!unombreCambiado.equals(unombreOriginal))
+            jButton1.setEnabled(true);
+    }//GEN-LAST:event_jTextField2FocusLost
+
+    private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
+        userCambiado = jTextField1.getText();
+        if(!userCambiado.equals(userOriginal))
+            jButton1.setEnabled(true);
+    }//GEN-LAST:event_jTextField1FocusLost
+
+    private void jComboBox1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboBox1FocusLost
+
+    }//GEN-LAST:event_jComboBox1FocusLost
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        permisosCambiado = jComboBox1.getSelectedItem().toString();
+        if(!permisosCambiado.equals(permisosOriginal))
+            jButton1.setEnabled(true);
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private int actualizar(String[] valores, String[] columnas){
+        int afectadas = 0;
+        BaseDatos.conectar();
+        for(int i = 0; i < columnas.length; i++){
+            if(!valores[i].isEmpty()){
+                String nuVal = "";
+                switch(i){
+                    case 0:
+                        nuVal = userCambiado;
+                        break;
+                    case 1:
+                        nuVal = passCambiado;
+                        break;
+                    case 2:
+                        nuVal = unombreCambiado;
+                        break;
+                    case 3:
+                        nuVal = permisosCambiado;
+                        break;
+                }
+                afectadas += BaseDatos.actualizar("usuarios", "id_usuario", idOriginal, columnas[i], nuVal);
+            }
+        }
+        BaseDatos.desconectar();
+        return afectadas;
+    }
+    
+    public void mostrarParaActualizar(){
+        jTextField1.setText(userOriginal);
+        jTextField2.setText(unombreOriginal);
+        jPasswordField1.setText(passOriginal);
+        jPasswordField2.setText(passOriginal);
+        jComboBox1.setSelectedItem(permisosOriginal);
+    }
+    
    private String pass1 = "", pass2 = "";
+   private String userCambiado = "",
+                  passCambiado = "",
+                  unombreCambiado = "",
+                  permisosCambiado = "";
    public String userOriginal = "",
                   passOriginal = "",
                   unombreOriginal = "",
                   permisosOriginal = "",
-                  idOrigianl = "";
+                  idOriginal = "";
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    public javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     public javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
@@ -298,8 +367,8 @@ public class Usuario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     public javax.swing.JPasswordField jPasswordField1;
     public javax.swing.JPasswordField jPasswordField2;
-    public javax.swing.JTextField jTextField1;
-    public javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel mensajeLbl;
     // End of variables declaration//GEN-END:variables

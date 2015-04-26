@@ -74,7 +74,7 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tablaUsuariosMouseClicked"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="modelo = BaseDatos.consultar(&quot;SELECT unombre,user,permisos FROM usuarios&quot;, 3, titulos);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="modelo = BaseDatos.consultar(&quot;SELECT * FROM usuarios&quot;, 5, titulos);"/>
           </AuxValues>
         </Component>
       </SubComponents>
@@ -82,7 +82,7 @@
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Tahoma" size="12" style="0"/>
+          <Font name="Tahoma" size="12" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Eliminar"/>
       </Properties>
@@ -93,7 +93,7 @@
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Tahoma" size="12" style="0"/>
+          <Font name="Tahoma" size="12" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Editar"/>
       </Properties>
@@ -103,6 +103,7 @@
     </Component>
     <Container class="javax.swing.JToolBar" name="jToolBar1">
       <Properties>
+        <Property name="floatable" type="boolean" value="false"/>
         <Property name="rollover" type="boolean" value="true"/>
       </Properties>
 

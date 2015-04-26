@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Usuario
+ * Copyright (C) 2015 Man-gel
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,8 +17,10 @@
  */
 package proy_casah;
 
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.table.*;
+import java.util.*;
 
 /**
  *
@@ -53,7 +55,7 @@ public class ChangeUsers extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Lista Usuarios");
 
-        modelo = BaseDatos.consultar("SELECT unombre,user,permisos FROM usuarios", 3, titulos);
+        modelo = BaseDatos.consultar("SELECT * FROM usuarios", 5, titulos);
         tablaUsuarios.setModel(modelo);
         tablaUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -62,7 +64,7 @@ public class ChangeUsers extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(tablaUsuarios);
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton1.setText("Eliminar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,7 +72,7 @@ public class ChangeUsers extends javax.swing.JDialog {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton2.setText("Editar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,6 +80,7 @@ public class ChangeUsers extends javax.swing.JDialog {
             }
         });
 
+        jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
         avisoLbl.setFont(new java.awt.Font("DialogInput", 1, 14)); // NOI18N
@@ -118,49 +121,58 @@ public class ChangeUsers extends javax.swing.JDialog {
                 return;
             else{
             fila = tablaUsuarios.getSelectedRow();
-            String registro[] = BaseDatos.consultarRegistro("SELECT * FROM usuarios WHERE user = '"+tablaUsuarios.getValueAt(fila, 1).toString()+"'", 5);
+            String[] registro = BaseDatos.consultarRegistro("SELECT * FROM usuarios WHERE user = '"+tablaUsuarios.getValueAt(fila, 1).toString()+"'", 5);
             String idSeleccionado = BaseDatos.consultarCampo("usuarios","id_usuario", "id_usuario", registro[0]);
             int afectadas = BaseDatos.borrar(Integer.parseInt(idSeleccionado), "usuarios", "id_usuario");
-            avisoLbl.setText("AFECTADAS: "+afectadas);
+            avisoLbl.setText("ELIMINADOS: "+afectadas);
             }
         }        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
         if(continuar){
             fila = tablaUsuarios.getSelectedRow();
-            String registro[] = BaseDatos.consultarRegistro("SELECT * FROM usuarios WHERE user = '"+tablaUsuarios.getValueAt(fila, 1).toString()+"'", 5);
+            mostrarUsuarioSeleccionado(fila);
             Usuario users = new Usuario(new javax.swing.JFrame(),true);
-            users.jTextField1.setText(us);
-            users.jTextField2.setText(nom);
+            users.jButton1.setText("Guardar");
+            users.jButton1.setEnabled(false);
+            users.unombreOriginal = nom;
             users.userOriginal = us;
-            users.jPasswordField1.setText(registro[2]);
-            users.jPasswordField2.setText(registro[2]);
-            users.jComboBox1.setSelectedItem(perm);
+            users.passOriginal = p;
+            users.permisosOriginal = perm;
+            users.idOriginal = id;
+            users.mostrarParaActualizar();
             users.setLocationRelativeTo(this);
             users.setVisible(true);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void tablaUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUsuariosMouseClicked
-        continuar = true;
+        for(int i = 0; i < tablaUsuarios.getRowCount(); i++)
+            if(tablaUsuarios.isRowSelected(i)){
+                continuar = true;
+                break;
+            }
         fila = tablaUsuarios.getSelectedRow();
         mostrarUsuarioSeleccionado(fila);
     }//GEN-LAST:event_tablaUsuariosMouseClicked
     
     private void mostrarUsuarioSeleccionado(int fila){
-        nom = tablaUsuarios.getValueAt(fila, 0).toString();
+        nom = tablaUsuarios.getValueAt(fila, 2).toString();
         us = tablaUsuarios.getValueAt(fila, 1).toString();
-        perm = tablaUsuarios.getValueAt(fila, 2).toString();
+        perm = tablaUsuarios.getValueAt(fila, 3).toString();
+        id = tablaUsuarios.getValueAt(fila, 0).toString();
+        p = BaseDatos.consultarCampo("usuarios","password","id_usuario",id);
     }
     
     private int fila;
     private DefaultTableModel modelo;
-    private String[] titulos = {"Nombre","User","Permisos"};
+    private String[] titulos = {"No","User","Nombre","Permisos"};
     private String us;
     private String nom;
     private String perm;
+    private String p;
+    private String id = "";
     private Boolean continuar = false;
     private String usuarioSeleccionado[];
     // Variables declaration - do not modify//GEN-BEGIN:variables

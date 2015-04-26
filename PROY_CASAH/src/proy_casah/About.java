@@ -65,7 +65,8 @@ public class About extends javax.swing.JDialog {
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        String gpl = "Copyright (C) 2015   author: Man-gel   repo: https://github.com/Man-gel"
+        String gpl ="Inventory control system for orphanage's warehouse\n"
+        + "Copyright (C) 2015   Man-gel\nhttps://github.com/Man-gel/Proyecto_casah"
         + "\n\nThis program is free software; you can redistribute it and/or "
         + "\nmodify it under the terms of the GNU General Public License"
         + "\nas published by the Free Software Foundation; either version 2"
@@ -78,6 +79,7 @@ public class About extends javax.swing.JDialog {
         + "\nalong with this program; if not, write to the Free Software"
         + "\nFoundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.";
         jTextArea1.setText(gpl);
+        jTextArea1.setCaretPosition(0);
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
