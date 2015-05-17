@@ -47,8 +47,6 @@ public class Usuario extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox();
@@ -56,6 +54,9 @@ public class Usuario extends javax.swing.JDialog {
         jPasswordField2 = new javax.swing.JPasswordField();
         jToolBar1 = new javax.swing.JToolBar();
         mensajeLbl = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Datos Usuario");
@@ -78,24 +79,6 @@ public class Usuario extends javax.swing.JDialog {
         jLabel5.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 14)); // NOI18N
         jLabel5.setText("Permisos");
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton1.setText("Guardar");
-        jButton1.setNextFocusableComponent(jButton2);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton2.setText("Cancelar");
-        jButton2.setNextFocusableComponent(jTextField2);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         jTextField1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jTextField1.setNextFocusableComponent(jPasswordField1);
         jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -103,23 +86,23 @@ public class Usuario extends javax.swing.JDialog {
                 jTextField1FocusLost(evt);
             }
         });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
 
         jTextField2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jTextField2.setNextFocusableComponent(jTextField1);
-        jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextField2FocusLost(evt);
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField2KeyPressed(evt);
             }
         });
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Usuario", "Administrador" }));
         jComboBox1.setSelectedItem(2);
         jComboBox1.setNextFocusableComponent(jButton1);
-        jComboBox1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jComboBox1FocusLost(evt);
-            }
-        });
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -149,39 +132,72 @@ public class Usuario extends javax.swing.JDialog {
         mensajeLbl.setToolTipText("");
         jToolBar1.add(mensajeLbl);
 
+        jPanel1.setBackground(new java.awt.Color(0, 153, 153));
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton1.setText("Guardar");
+        jButton1.setNextFocusableComponent(jButton2);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton2.setText("Cancelar");
+        jButton2.setNextFocusableComponent(jTextField2);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
-                        .addGap(37, 37, 37))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel1)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5))
                         .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jPasswordField2, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(29, 29, 29))))))
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPasswordField1)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 144, Short.MAX_VALUE)
+                            .addComponent(jPasswordField2)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField2)))
+                .addContainerGap(11, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,11 +222,9 @@ public class Usuario extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addGap(17, 17, 17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -232,6 +246,7 @@ public class Usuario extends javax.swing.JDialog {
 
     private void jPasswordField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField2FocusLost
         char p2[] = jPasswordField2.getPassword();
+        pass2 = "";
         for(char c : p2)
             pass2 = pass2 + c;
         if(!Sis.passIguales(pass1, pass2)){
@@ -262,7 +277,7 @@ public class Usuario extends javax.swing.JDialog {
            return;
        }
         if(Sis.textoInseguro(jTextField1.getText()) || Sis.textoInseguro(pass1) || Sis.textoInseguro(jTextField2.getText()) || Sis.textoInseguro(pass2)){
-            JOptionPane.showMessageDialog(this, "¿Qué intentas?\nAlgunos caracteres introducidos se consideran inseguros para el sistema.");
+            JOptionPane.showMessageDialog(this, "¿Qué intentas?\nAlgunos caracteres introducidos se consideran inseguros para el sistema: \n;  '  \"  \\");
             jPasswordField2.setText("");
             jPasswordField1.setText("");
             jTextField1.setText("");
@@ -276,40 +291,54 @@ public class Usuario extends javax.swing.JDialog {
                 return;         
             }else{
                 if( BaseDatos.insertar("usuarios",columnas,valores) )
+                {
                     mensajeLbl.setText("GUARDADO");
-                else
+                    jPasswordField2.setText("");
+                    jPasswordField1.setText("");
+                    jTextField2.setText("");
+                    jTextField1.setText("");
+                    jTextField2.grabFocus();                
+                }else
                     mensajeLbl.setText("OCURRIÓ UN ERROR AL GUARDAR"); 
             }            
-        }else if(jButton1.getText().equals("Guardar")){
-            int afectadas = actualizar(valores,columnas);
-            if( afectadas != 0)
-                    mensajeLbl.setText("GUARDADO");
+        }else 
+        {
+            String[] v = {userCambiado, passCambiado, unombreCambiado, permisosCambiado};
+            int afectadas = actualizar(v,columnas);
+            if( afectadas != 0){
+                mensajeLbl.setText("GUARDADO");
+                ChangeUsers.modelo = BaseDatos.consultar("SELECT * FROM usuarios",5, ChangeUsers.titulosUser);
+                ChangeUsers.tabla.setModel(ChangeUsers.modelo);
+                this.dispose();
+            }                
             else
                 mensajeLbl.setText("OCURRIÓ UN ERROR AL GUARDAR"); 
         }                     
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
-        unombreCambiado = jTextField2.getText();
-        if(!unombreCambiado.equals(unombreOriginal))
-            jButton1.setEnabled(true);
-    }//GEN-LAST:event_jTextField2FocusLost
-
-    private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
-        userCambiado = jTextField1.getText();
-        if(!userCambiado.equals(userOriginal))
-            jButton1.setEnabled(true);
-    }//GEN-LAST:event_jTextField1FocusLost
-
-    private void jComboBox1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboBox1FocusLost
-
-    }//GEN-LAST:event_jComboBox1FocusLost
-
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         permisosCambiado = jComboBox1.getSelectedItem().toString();
-        if(!permisosCambiado.equals(permisosOriginal))
+        if(!permisosOriginal.equals(permisosCambiado))
             jButton1.setEnabled(true);
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
+        unombreCambiado = jTextField2.getText();
+        if(!unombreOriginal.equals(unombreCambiado))
+            jButton1.setEnabled(true);
+    }//GEN-LAST:event_jTextField2KeyPressed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        userCambiado = jTextField1.getText();
+        if(!userOriginal.equals(userCambiado))
+            jButton1.setEnabled(true);
+        if(mensajeLbl.getText().equals("GUARDADO"))
+            mensajeLbl.setText("");
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
+
+    }//GEN-LAST:event_jTextField1FocusLost
 
     private int actualizar(String[] valores, String[] columnas){
         int afectadas = 0;
@@ -319,16 +348,16 @@ public class Usuario extends javax.swing.JDialog {
                 String nuVal = "";
                 switch(i){
                     case 0:
-                        nuVal = userCambiado;
+                        nuVal = jTextField1.getText();
                         break;
                     case 1:
-                        nuVal = passCambiado;
+                        nuVal = pass2;
                         break;
                     case 2:
-                        nuVal = unombreCambiado;
+                        nuVal = jTextField2.getText();
                         break;
                     case 3:
-                        nuVal = permisosCambiado;
+                        nuVal = jComboBox1.getSelectedItem().toString();
                         break;
                 }
                 afectadas += BaseDatos.actualizar("usuarios", "id_usuario", idOriginal, columnas[i], nuVal);
@@ -346,8 +375,9 @@ public class Usuario extends javax.swing.JDialog {
         jComboBox1.setSelectedItem(permisosOriginal);
     }
     
-   private String pass1 = "", pass2 = "";
-   private String userCambiado = "",
+   private String pass1 = "";
+   public static String pass2 = "";
+   public String userCambiado = "",
                   passCambiado = "",
                   unombreCambiado = "",
                   permisosCambiado = "";
@@ -365,10 +395,11 @@ public class Usuario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     public javax.swing.JPasswordField jPasswordField1;
     public javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    public javax.swing.JTextField jTextField1;
+    public javax.swing.JTextField jTextField2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel mensajeLbl;
     // End of variables declaration//GEN-END:variables

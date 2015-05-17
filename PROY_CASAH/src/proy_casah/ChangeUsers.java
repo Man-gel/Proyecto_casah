@@ -17,10 +17,11 @@
  */
 package proy_casah;
 
-import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.table.*;
-import java.util.*;
+import static proy_casah.Principal.colFechaE;
+import static proy_casah.Principal.colFechaS;
+import static proy_casah.Principal.colProd;
 
 /**
  *
@@ -46,31 +47,45 @@ public class ChangeUsers extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaUsuarios = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        tabla = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
         avisoLbl = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Lista Usuarios");
+        setTitle("Registros");
+        setResizable(false);
 
-        modelo = BaseDatos.consultar("SELECT * FROM usuarios", 5, titulos);
-        tablaUsuarios.setModel(modelo);
-        tablaUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tabla.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaUsuariosMouseClicked(evt);
+                tablaMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tablaUsuarios);
+        tabla.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tablaKeyPressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabla);
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton1.setText("Eliminar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        jToolBar1.setFloatable(false);
+        jToolBar1.setRollover(true);
+
+        avisoLbl.setFont(new java.awt.Font("DialogInput", 1, 14)); // NOI18N
+        jToolBar1.add(avisoLbl);
+
+        jPanel1.setBackground(new java.awt.Color(0, 153, 153));
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton2.setText("Editar");
@@ -80,33 +95,48 @@ public class ChangeUsers extends javax.swing.JDialog {
             }
         });
 
-        jToolBar1.setFloatable(false);
-        jToolBar1.setRollover(true);
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton1.setText("Eliminar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        avisoLbl.setFont(new java.awt.Font("DialogInput", 1, 14)); // NOI18N
-        jToolBar1.add(avisoLbl);
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(64, 64, 64))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 2, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(36, 36, 36))
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -117,70 +147,203 @@ public class ChangeUsers extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if(continuar){
             int res = JOptionPane.showConfirmDialog(this,"¿Está seguro que desea eliminar este usuario?","Atención",JOptionPane.YES_NO_OPTION);
-            if(res == JOptionPane.NO_OPTION || res == JOptionPane.CANCEL_OPTION )
-                return;
-            else{
-            fila = tablaUsuarios.getSelectedRow();
-            String[] registro = BaseDatos.consultarRegistro("SELECT * FROM usuarios WHERE user = '"+tablaUsuarios.getValueAt(fila, 1).toString()+"'", 5);
-            String idSeleccionado = BaseDatos.consultarCampo("usuarios","id_usuario", "id_usuario", registro[0]);
-            int afectadas = BaseDatos.borrar(Integer.parseInt(idSeleccionado), "usuarios", "id_usuario");
-            avisoLbl.setText("ELIMINADOS: "+afectadas);
+            if(res == JOptionPane.OK_OPTION  )
+            {
+                continuar = false;
+                fila = tabla.getSelectedRow();
+                String idSeleccionado;
+                int afectadas;
+                switch(opcion)
+                {
+                    case "usuarios":
+                        if(tabla.getRowCount() == 1 && tabla.getValueAt(0, 3).toString().equals("Administrador"))
+                        {
+                            JOptionPane.showMessageDialog(this,"El sistema no se puede quedar sin un Administrador");
+                            return;
+                        }
+                        idSeleccionado = tabla.getValueAt(fila, 0).toString();
+                        afectadas = BaseDatos.borrar(Integer.parseInt(idSeleccionado), "usuarios", "id_usuario");
+                        avisoLbl.setText("ELIMINADOS: "+afectadas);
+                        Sis.limpiarTabla(modelo, tabla);
+                        tabla.setModel(Sis.refrescarModelo("SELECT * FROM usuarios",3, titulosUser) );
+                        break;
+                    case "articulos":
+                        idSeleccionado = tabla.getValueAt(fila, 0).toString();
+                        afectadas = BaseDatos.borrar(Integer.parseInt(idSeleccionado), "producto", "id_producto");
+                        avisoLbl.setText("ELIMINADOS: "+afectadas);
+                        Sis.limpiarTabla(modelo, tabla);
+                        tabla.setModel(Sis.refrescarModelo("SELECT * FROM producto",3, titulosArticulos) );
+                        String[] t = {"No","Artículo"};
+                        Sis.limpiarTabla(Principal.modeloTabla, Principal.tablaArticulos);
+                        Principal.tablaArticulos.setModel(Sis.refrescarModelo("SELECT * FROM producto",3, t) );
+                        colFechaE = BaseDatos.consultarLista("SELECT id_producto,max(fecha_actualizacion) FROM existencias WHERE movimiento = 'ENTRADA'", 2);
+                        colFechaS = BaseDatos.consultarLista("SELECT id_producto,max(fecha_actualizacion) FROM existencias WHERE movimiento = 'SALIDA'", 2);
+                        colProd = BaseDatos.consultarLista("SELECT id_producto,cantidad,monto,descripcion FROM producto", 4);
+                        break;
+                    case "beneficiarios":
+                        idSeleccionado = tabla.getValueAt(fila, 0).toString();
+                        afectadas = BaseDatos.borrar(Integer.parseInt(idSeleccionado), "beneficiarios", "id_beneficiario");
+                        avisoLbl.setText("ELIMINADOS: "+afectadas);
+                        Sis.limpiarTabla(modelo, tabla);
+                        tabla.setModel(Sis.refrescarModelo("SELECT * FROM beneficiarios",3, titulosBeneficiarios) );
+                        break;
+                    case "proveedores":
+                        idSeleccionado = tabla.getValueAt(fila, 0).toString();
+                        afectadas = BaseDatos.borrar(Integer.parseInt(idSeleccionado), "proveedores", "id_proveedor");
+                        avisoLbl.setText("ELIMINADOS: "+afectadas);
+                        Sis.limpiarTabla(modelo, tabla);
+                        tabla.setModel(Sis.refrescarModelo("SELECT * FROM proveedores",3, titulosProveedores) );
+                        break;
+                }
             }
-        }        
+        }
+        else
+            JOptionPane.showMessageDialog(this,"Debe seleccionar un elemento de la lista");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if(continuar){
-            fila = tablaUsuarios.getSelectedRow();
-            mostrarUsuarioSeleccionado(fila);
-            Usuario users = new Usuario(new javax.swing.JFrame(),true);
-            users.jButton1.setText("Guardar");
-            users.jButton1.setEnabled(false);
-            users.unombreOriginal = nom;
-            users.userOriginal = us;
-            users.passOriginal = p;
-            users.permisosOriginal = perm;
-            users.idOriginal = id;
-            users.mostrarParaActualizar();
-            users.setLocationRelativeTo(this);
-            users.setVisible(true);
-        }
+            continuar = false;
+            switch(opcion)
+            {
+                case "usuarios":
+                    fila = tabla.getSelectedRow();
+                    mostrarSeleccionado(fila);
+                    Usuario users = new Usuario(new javax.swing.JFrame(),true);
+                    users.jButton1.setText("Guardar");
+                    users.jButton1.setEnabled(false);
+                    users.unombreCambiado = users.unombreOriginal = nom;
+                    users.userCambiado = users.userOriginal = sig;
+                    users.passCambiado = users.passOriginal = users.pass2 = p;
+                    users.permisosCambiado = users.permisosOriginal = perm;
+                    users.idOriginal = id;
+                    users.mostrarParaActualizar();
+                    users.setLocationRelativeTo(this);
+                    users.setVisible(true);
+                    break;
+                case "articulos":
+                    fila = tabla.getSelectedRow();
+                    mostrarSeleccionado(fila);
+                    Articulo art = new Articulo(new javax.swing.JFrame(),true);
+                    art.jButton1.setEnabled(false);
+                    art.jButton1.setText("Guardar");
+                    art.articuloOriginal = sig;
+                    art.descripcionOriginal = infoExtra;
+                    art.idOriginal = id;
+                    art.mostrarParaActualizar();
+                    art.setLocationRelativeTo(this);
+                    art.setVisible(true);
+                    break;
+                case "beneficiarios":
+                    fila = tabla.getSelectedRow();
+                    mostrarSeleccionado(fila);
+                    Beneficiarios b = new Beneficiarios(new javax.swing.JFrame(),true);
+                    b.jButton1.setEnabled(false);
+                    b.jButton1.setText("Guardar");
+                    b.beneficiarioOriginal = sig;
+                    b.informacionOriginal = infoExtra;
+                    b.idOriginal = id;
+                    b.mostrarParaActualizar();
+                    b.setLocationRelativeTo(this);
+                    b.setVisible(true);
+                    break;
+                case "proveedores":
+                    fila = tabla.getSelectedRow();
+                    mostrarSeleccionado(fila);
+                    Proveedores pv = new Proveedores(new javax.swing.JFrame(),true);
+                    pv.jButton1.setEnabled(false);
+                    pv.jButton1.setText("Guardar");
+                    pv.proveedorOriginal = sig;
+                    pv.domicilioOriginal = infoExtra;
+                    pv.idOriginal = id;
+                    pv.mostrarParaActualizar();
+                    pv.setLocationRelativeTo(this);
+                    pv.setVisible(true);
+                    
+                    break;
+            }
+            
+        }else
+            JOptionPane.showMessageDialog(this,"Debe seleccionar un elemento de la lista");
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void tablaUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUsuariosMouseClicked
-        for(int i = 0; i < tablaUsuarios.getRowCount(); i++)
-            if(tablaUsuarios.isRowSelected(i)){
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        for(int i = 0; i < tabla.getRowCount(); i++)
+            if(tabla.isRowSelected(i)){
                 continuar = true;
                 break;
             }
-        fila = tablaUsuarios.getSelectedRow();
-        mostrarUsuarioSeleccionado(fila);
-    }//GEN-LAST:event_tablaUsuariosMouseClicked
+        fila = tabla.getSelectedRow();
+        mostrarSeleccionado(fila);
+    }//GEN-LAST:event_tablaMouseClicked
+
+    private void tablaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tablaKeyPressed
     
-    private void mostrarUsuarioSeleccionado(int fila){
-        nom = tablaUsuarios.getValueAt(fila, 2).toString();
-        us = tablaUsuarios.getValueAt(fila, 1).toString();
-        perm = tablaUsuarios.getValueAt(fila, 3).toString();
-        id = tablaUsuarios.getValueAt(fila, 0).toString();
+    public void administrador(boolean esOno)
+    {
+            jButton1.setEnabled(esOno);
+            jButton2.setEnabled(esOno);     
+    }
+    
+    public void cargarUsuarios()
+    {
+        modelo = BaseDatos.consultar("SELECT * FROM usuarios", 5, titulosUser);
+        tabla.setModel(modelo);
+    }
+    
+    public void cargarArticulos()
+    {
+        modelo = BaseDatos.consultar("SELECT * FROM producto", 3, titulosArticulos);
+        tabla.setModel(modelo);        
+    }
+    
+    public void cargarProveedores()
+    {
+        modelo = BaseDatos.consultar("SELECT * FROM proveedores", 3, titulosProveedores);
+        tabla.setModel(modelo);
+    }
+    public void cargarBeneficiarios()
+    {
+        modelo = BaseDatos.consultar("SELECT * FROM beneficiarios", 3, titulosBeneficiarios);
+        tabla.setModel(modelo);
+    }
+    private void mostrarSeleccionado(int fila){
+        id = tabla.getValueAt(fila, 0).toString();
+        sig = tabla.getValueAt(fila, 1).toString();
+        if(opcion.equals("usuarios"))
+        {
+        perm = tabla.getValueAt(fila, 3).toString();
+        nom = tabla.getValueAt(fila, 2).toString();
         p = BaseDatos.consultarCampo("usuarios","password","id_usuario",id);
+        }
+        else
+            infoExtra = tabla.getValueAt(fila, 2).toString();
     }
     
     private int fila;
-    private DefaultTableModel modelo;
-    private String[] titulos = {"No","User","Nombre","Permisos"};
-    private String us;
-    private String nom;
-    private String perm;
-    private String p;
+    public static DefaultTableModel modelo;
+    public static String[] titulosUser = {"No","User","Nombre","Permisos"};
+    public static String[] titulosArticulos = {"No","Artículo","Descripcion"};
+    public static String[] titulosProveedores = {"No","Proveedor","Domicilio"};
+    public static String[] titulosBeneficiarios = {"No","Beneficiario","Información"};
+    private String sig = "";
+    private String nom = "";
+    private String perm = "";
+    private String p = "";
     private String id = "";
+    private String infoExtra = "";
+    public String opcion = "";
     private Boolean continuar = false;
-    private String usuarioSeleccionado[];
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel avisoLbl;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JTable tablaUsuarios;
+    public static javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,5 +1,6 @@
 
 package proy_casah;
+import java.awt.event.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javax.swing.*;
 /**
@@ -33,6 +34,7 @@ public class Loggin extends java.awt.Frame {
         button1 = new javax.swing.JButton();
         button2 = new javax.swing.JButton();
 
+        setAlwaysOnTop(true);
         setLocationByPlatform(true);
         setResizable(false);
         setTitle("Loggin");
@@ -55,6 +57,11 @@ public class Loggin extends java.awt.Frame {
 
         passPF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         passPF.setNextFocusableComponent(button1);
+        passPF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                passPFKeyPressed(evt);
+            }
+        });
 
         userTF.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         userTF.setFocusCycleRoot(true);
@@ -162,22 +169,36 @@ public class Loggin extends java.awt.Frame {
         }
     }//GEN-LAST:event_button1KeyPressed
 
+    private void passPFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passPFKeyPressed
+        if(evt.getKeyCode()== KeyEvent.VK_ENTER)
+            aceptar();
+    }//GEN-LAST:event_passPFKeyPressed
+
     private void aceptar(){
+        
         String us = userTF.getText();
         String pw = "";
         char pa[] = passPF.getPassword();
+        if(us.isEmpty() && pa.length == 0)
+        {
+            JOptionPane.showMessageDialog(this, "Debe proporcionar sus datos de acceso");passPF.setText("");
+            userTF.setText("");
+            passPF.setText("");
+            userTF.grabFocus();
+            return;
+        }            
         for(char let : pa){
             pw = pw + let;
         }
         if(Sis.textoInseguro(us) || Sis.textoInseguro(pw)){
-            JOptionPane.showMessageDialog(this, "¿Qué intentas?\nAlgunos caracteres introducidos se consideran inseguros para el sistema.");passPF.setText("");
+            JOptionPane.showMessageDialog(this, "¿Qué intentas?\nAlgunos caracteres introducidos se consideran inseguros para el sistema: \n;  '  \"  \\");passPF.setText("");
             userTF.setText("");
             userTF.grabFocus();
             return;
         }
         String consulta[] = BaseDatos.consultarRegistro("SELECT * FROM usuarios WHERE user = '"+us+"'", 5);
         if(consulta[1] == null){
-           JOptionPane.showMessageDialog(this, "El usuario y/o contraseña son incorrectos \ny/o se ha generado una excepción."); 
+           JOptionPane.showMessageDialog(this, "El usuario y/o contraseña son incorrectos\n\n\nexc"); 
             passPF.setText("");
             userTF.setText("");
             userTF.grabFocus();            
@@ -185,6 +206,7 @@ public class Loggin extends java.awt.Frame {
         }
         if(consulta[1].equals(us) && consulta[4].equals(pw)){
             Principal.usuario = consulta[3];
+            Principal.user = consulta[1];
             Principal.ini.doClick(100);
             this.exitForm(null);
         }else{

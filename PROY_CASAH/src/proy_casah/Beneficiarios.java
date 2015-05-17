@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Man-gel
+ * Copyright (C) 2015 Usuario
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,20 +19,17 @@ package proy_casah;
 
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
-import static proy_casah.Principal.colFechaE;
-import static proy_casah.Principal.colFechaS;
-import static proy_casah.Principal.colProd;
 
 /**
  *
- * @author Man-gel
+ * @author Usuario
  */
-public class Articulo extends javax.swing.JDialog {
+public class Beneficiarios extends javax.swing.JDialog {
 
     /**
-     * Creates new form Articulo
+     * Creates new form Beneficiarios
      */
-    public Articulo(java.awt.Frame parent, boolean modal) {
+    public Beneficiarios(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -46,26 +43,35 @@ public class Articulo extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jTextField1 = new javax.swing.JTextField();
         jToolBar1 = new javax.swing.JToolBar();
-        labelAviso = new javax.swing.JLabel();
+        lblMensaje = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Artículo");
+        setTitle("Beneficiarios");
         setAlwaysOnTop(true);
-
-        jLabel1.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 18)); // NOI18N
-        jLabel1.setText("Descripción");
+        setResizable(false);
 
         jLabel2.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 18)); // NOI18N
-        jLabel2.setText("Artículo");
+        jLabel2.setText("Nombre");
+
+        jLabel3.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 18)); // NOI18N
+        jLabel3.setText("Información");
+
+        jTextField1.setFont(new java.awt.Font("Monospaced", 0, 13)); // NOI18N
+        jTextField1.setNextFocusableComponent(jTextArea1);
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -77,20 +83,11 @@ public class Articulo extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(jTextArea1);
 
-        jTextField1.setFont(new java.awt.Font("Monospaced", 0, 13)); // NOI18N
-        jTextField1.setNextFocusableComponent(jTextArea1);
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextField1KeyPressed(evt);
-            }
-        });
-
-        jToolBar1.setBorder(null);
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
-        labelAviso.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jToolBar1.add(labelAviso);
+        lblMensaje.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jToolBar1.add(lblMensaje);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 153));
 
@@ -119,9 +116,9 @@ public class Articulo extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addContainerGap())
+                .addGap(24, 24, 24))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,43 +133,58 @@ public class Articulo extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addGap(10, 10, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addComponent(jLabel3)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+       beneficiarioCambiado = jTextField1.getText();
+       if(lblMensaje.getText().equals("INGRESADO"))
+           lblMensaje.setText("");
+       if(!beneficiarioOriginal.equals(beneficiarioCambiado))
+           jButton1.setEnabled(true);       
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String cols[] = {"pnombre","descripcion","cantidad","monto"};
-        String vals[] = {jTextField1.getText(),jTextArea1.getText(),"",""};
-        String[] t = {"No","Artículo"};
+        String cols[] = {"bnombre","tipo"};
+        String vals[] = {jTextField1.getText(),jTextArea1.getText()};
+        if(jTextField1.getText().length() == 0){
+               JOptionPane.showMessageDialog(this, "Debe ingresar un nombre para éste nuevo Beneficiario");
+               return;
+           }
         if(Sis.textoInseguro(jTextField1.getText()) || Sis.textoInseguro(jTextArea1.getText())){
             JOptionPane.showMessageDialog(this, "¿Qué intentas?\nAlgunos caracteres introducidos se consideran inseguros para el sistema: \n;  '  \"  \\");
             jTextField1.setText("");
@@ -180,71 +192,39 @@ public class Articulo extends javax.swing.JDialog {
             jTextField1.grabFocus();
             return;
         }
-        if(jTextField1.getText().length() == 0){
-            JOptionPane.showMessageDialog(this, "Debe ingresar un nombre para este nuevo Artículo");
-            return;
-        }       
         if(jButton1.getText().equals("Agregar"))
         {
-            if(BaseDatos.insertar("producto", cols, vals)){
-                labelAviso.setText("INGRESADO");
+            if(BaseDatos.insertar("beneficiarios", cols, vals)){
+                lblMensaje.setText("INGRESADO");
                 jTextField1.setText("");
                 jTextArea1.setText("");
                 jTextField1.grabFocus();
-                Sis.limpiarTabla(Principal.modeloTabla, Principal.tablaArticulos);
-                Principal.tablaArticulos.setModel(Sis.refrescarModelo("SELECT * FROM producto",3, t) );
-                colFechaE = BaseDatos.consultarLista("SELECT id_producto,max(fecha_actualizacion) FROM existencias WHERE movimiento = 'ENTRADA'", 2);
-                colFechaS = BaseDatos.consultarLista("SELECT id_producto,max(fecha_actualizacion) FROM existencias WHERE movimiento = 'SALIDA'", 2);
-                colProd = BaseDatos.consultarLista("SELECT id_producto,cantidad,monto,descripcion FROM producto", 4);
             }
         }
         else
         {
-            String c[]= {"pnombre","descripcion"};
-            //String cant = BaseDatos.consultarCampo("producto", "cantidad", "id_producto", idOriginal);
-            //String m = BaseDatos.consultarCampo("producto", "monto", "id_producto", idOriginal);
-            String[] v = {articuloCambiado,descripcionCambiado};
-            int afectadas = actualizar(v,c);
-            if( afectadas != 0){
-            labelAviso.setText("GUARDADO");
-            ChangeUsers.modelo = BaseDatos.consultar("SELECT * FROM producto",3, ChangeUsers.titulosArticulos);
-            ChangeUsers.tabla.setModel(ChangeUsers.modelo);
-            Principal.tablaArticulos.setModel(Sis.refrescarModelo("SELECT * FROM producto",3, t) );
-            colFechaE = BaseDatos.consultarLista("SELECT id_producto,max(fecha_actualizacion) FROM existencias WHERE movimiento = 'ENTRADA'", 2);
-            colFechaS = BaseDatos.consultarLista("SELECT id_producto,max(fecha_actualizacion) FROM existencias WHERE movimiento = 'SALIDA'", 2);
-            colProd = BaseDatos.consultarLista("SELECT id_producto,cantidad,monto,descripcion FROM producto", 4);
-            this.dispose();
-            }                
+            String[] v = {beneficiarioCambiado,informacionCambiado};
+            int afectadas = actualizar(v,cols);
+            if( afectadas != 0)
+            {
+                lblMensaje.setText("GUARDADO");
+                ChangeUsers.modelo = BaseDatos.consultar("SELECT * FROM beneficiarios",3, ChangeUsers.titulosBeneficiarios);
+                ChangeUsers.tabla.setModel(ChangeUsers.modelo);
+                this.dispose();
+            } 
             else
-                labelAviso.setText("OCURRIÓ UN ERROR AL GUARDAR"); 
+                lblMensaje.setText("OCURRIÓ UN ERROR AL GUARDAR"); 
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
-        articuloCambiado = jTextField1.getText();
-        if(labelAviso.getText().equals("GUARDADO"))
-            labelAviso.setText("");
-        if(!articuloOriginal.equals(articuloCambiado))
-           jButton1.setEnabled(true);
-    }//GEN-LAST:event_jTextField1KeyPressed
-
     private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyPressed
-        descripcionCambiado = jTextArea1.getText();
-        if(!descripcionOriginal.equals(descripcionCambiado))
-            jButton1.setEnabled(true);                
+        informacionCambiado = jTextArea1.getText(); 
+        if(!informacionOriginal.equals(informacionCambiado))
+           jButton1.setEnabled(true);
         if(evt.getKeyCode()== KeyEvent.VK_TAB)
-            jButton1.grabFocus();        
+            jButton1.grabFocus();
     }//GEN-LAST:event_jTextArea1KeyPressed
 
-    public void mostrarParaActualizar(){
-        jTextField1.setText(articuloOriginal);
-        jTextArea1.setText(descripcionOriginal);
-    }
-    
     private int actualizar(String[] valores, String[] columnas){
         int afectadas = 0;
         BaseDatos.conectar();
@@ -259,29 +239,75 @@ public class Articulo extends javax.swing.JDialog {
                         nuVal = jTextArea1.getText();
                         break;
                 }
-                afectadas += BaseDatos.actualizar("producto", "id_producto", idOriginal, columnas[i], nuVal);
+                afectadas += BaseDatos.actualizar("beneficiarios", "id_beneficiario", idOriginal, columnas[i], nuVal);
             }
         }
         BaseDatos.desconectar();
         return afectadas;
     }
     
-    public String articuloOriginal = "",
-                  descripcionOriginal = "",
-                  idOriginal = "";;
-    private String articuloCambiado = "",
-                   descripcionCambiado = "";
-                   
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Beneficiarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Beneficiarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Beneficiarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Beneficiarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                Beneficiarios dialog = new Beneficiarios(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
+    
+    public void mostrarParaActualizar(){
+        jTextField1.setText(beneficiarioOriginal);
+        jTextArea1.setText(informacionOriginal);
+    }
+    public String beneficiarioOriginal = "",
+                  informacionOriginal = "",
+                  idOriginal = "";
+    private String beneficiarioCambiado = "",
+                   informacionCambiado = "";
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JTextArea jTextArea1;
     public javax.swing.JTextField jTextField1;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JLabel labelAviso;
+    private javax.swing.JLabel lblMensaje;
     // End of variables declaration//GEN-END:variables
 }

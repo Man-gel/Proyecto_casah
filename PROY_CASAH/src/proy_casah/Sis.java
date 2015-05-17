@@ -37,7 +37,7 @@ abstract class Sis extends javax.swing.JFrame {
     public static boolean textoInseguro(String palabra){
       //boolean inseguroComa = Pattern.matches("([A-Za-z]*)*[;]([A-Za-z]*)+", palabra);
       boolean inseguroComa = false;
-      if(palabra.contains(";"))
+      if(palabra.contains(";") || palabra.contains("'") || palabra.contains("\""))
           inseguroComa = true;
       boolean inseguroBslash = false;
       char[] letras = palabra.toCharArray();
@@ -57,9 +57,8 @@ abstract class Sis extends javax.swing.JFrame {
         }
         tabla.setModel(modelo);
     }
-    
+        
     public static DefaultTableModel refrescarModelo(String query,Integer ncampos,String[] titulos){
-        DefaultTableModel modelo = new DefaultTableModel(null,titulos);
         return BaseDatos.consultar(query,ncampos,titulos);
     }
     
@@ -69,29 +68,47 @@ abstract class Sis extends javax.swing.JFrame {
         return false;
     }
     
-    public static boolean aprobarComoNumero(String cadena) {
-        boolean aprobado = Pattern.matches("\\W+[0-9]+", cadena);
+    public static boolean aprobarComoCantidad(String cadena) {
+        boolean aprobado = Pattern.matches("[.]*[0-9]+|[0-9]+|([0-9]+[.]*[0-9]+)", cadena);
         return aprobado;        
     }
-    
+    public static boolean aprobarComoFecha(String cadena) {
+        boolean aprobado = Pattern.matches("\\d{4}-\\d{2}-\\d{2}", cadena);
+        return aprobado;        
+    }
     public static Boolean usuarioYaExiste(String user){
         String query = "SELECT * FROM usuarios";
         String cols[] = {"id_usuario","user","password","unombre","permisos"};
         Map<Integer,String[]> result = BaseDatos.consultar(query, cols);
         for(Integer key : result.keySet()){
-            //JOptionPane.showMessageDialog(null, "Key: "+key+"\nresult: "+result);
             String valores[] = (String[])result.get(key);
-            for(String val : valores){
-            //JOptionPane.showMessageDialog(null, "Key: "+key+"\nval: "+val);
             if(valores[1].equals(user))
                 return true;
-            }
         }
         return false;
     }
     
-    public static void llenarTabla(JTable tabla, TableColumnModel colmnas[]){
-            
+    public static TableModel llenarTabla(String query,String[] columnas )
+    {          
+        TableModel mod = new DefaultTableModel(null,columnas)
+        {
+            public Class getColumnClass(int col)
+            {
+                Class valorRegresado;
+                if((col >= 0) && (col < getColumnCount()))
+                    valorRegresado = getValueAt(0,col).getClass();
+                else
+                    valorRegresado = Object.class;
+                return valorRegresado;              
+            }            
+        };
+        return mod;
+    }
+    
+    public static TableRowSorter ajustarSorter(TableModel modelo)
+    {
+        final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelo);
+        return sorter;
     }
       
 }

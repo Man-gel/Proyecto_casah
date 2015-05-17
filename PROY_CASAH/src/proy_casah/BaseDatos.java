@@ -41,13 +41,13 @@ public class BaseDatos {
                 return false;
             }
         }catch (ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog( null,"Class Not Found Exception:\n"+ex.getMessage() );
+            JOptionPane.showMessageDialog( null,"Conectar>Class Not Found Exception:\n"+ex.getMessage() );
             return false;
         }catch(SQLException e){
-            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Conectar>SQL Exception\n: "+e.getMessage() );
             return false;
         }catch(Exception e){
-            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Conectar>Exception:\n"+e.getMessage() );
             return false;
         }
         return true;        
@@ -73,10 +73,8 @@ public class BaseDatos {
                 stmt = null;
                 rSet = null;
             } catch (Exception e) {
-                JOptionPane.showMessageDialog( null, "Exception '"+ex+"':\n"+e.getMessage() );
+                JOptionPane.showMessageDialog( null, "Desconectar>Exception '"+ex+"':\n"+e.getMessage() );
                 return false;
-            }finally{
-                return true; 
             }
         }
         return false;
@@ -91,28 +89,58 @@ public class BaseDatos {
                 cols = cols + columnas[i]+",";            
         }
         
-        String values = "'";
+        String values = "";
         for(int i = 0; i < datos.length; i++){
-            if(i == (datos.length-1))
-                values = values + datos[i]+"'";
-            else
-                values = values+datos[i]+"','";            
+            if(datos[i].isEmpty() || ((datos[i].length() == 1 )&&(datos[i].matches("\\D\\s|[\t]"))))
+            {
+                if(i == (datos.length-1))
+                    values = values + "DEFAULT";
+                else
+                    values = values+"DEFAULT,";
+            }
+            else 
+            {
+                if(i == (datos.length-1))
+                    values = values +"'"+ datos[i]+"'";
+                else
+                    values = values+"'"+datos[i]+"',";
+            }
         }            
         try {
             conectar();
             stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO "+tabla+" ("+cols+")VALUES(" + values + ")");
+            String sql = "INSERT INTO "+tabla+" ("+cols+")VALUES(" + values + ")";
+            //JOptionPane.showMessageDialog( null, sql);
+            stmt.executeUpdate(sql);
             return true;
         } catch (SQLException sqlE) {
-            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+sqlE.getMessage() );
+            JOptionPane.showMessageDialog( null, "Insertar>SQL Exception\n: "+sqlE.getMessage() );
             return false;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Insertar>Exception:\n"+e.getMessage() );
             return false;
         } finally {
             desconectar();
         }
     }
+    
+    public static boolean ejecutar(String query){
+        try {
+            conectar();
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+            return true;
+        } catch (SQLException sqlE) {
+            JOptionPane.showMessageDialog( null, "Ejecutar>SQL Exception\n: "+sqlE.getMessage() );
+            return false;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog( null, "Ejecutar>Exception:\n"+e.getMessage() );
+            return false;
+        } finally {
+            desconectar();
+        }        
+    }
+            
     
     public static ArrayList<ArrayList> consultarVarios(String query,Integer campos){
         ArrayList<ArrayList> consulta = new ArrayList<ArrayList>();
@@ -130,10 +158,10 @@ public class BaseDatos {
             }
             return consulta;
         } catch (SQLException sqlE) {
-            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+sqlE.getMessage() );
+            JOptionPane.showMessageDialog( null, "Cons Varios>SQL Exception\n: "+sqlE.getMessage() );
             return null;
         } catch (Exception sqlE) {
-            JOptionPane.showMessageDialog( null, "Exception:\n"+sqlE.getMessage() );
+            JOptionPane.showMessageDialog( null, "Cons Varios>Exception:\n"+sqlE.getMessage() );
             return null;
         } finally {
             desconectar();            
@@ -159,10 +187,10 @@ public class BaseDatos {
             }
             return obj;
         } catch (SQLException sqlE) {
-            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+sqlE.getMessage() );
+            JOptionPane.showMessageDialog( null, "Def Tab Mod Cons>SQL Exception\n: "+sqlE.getMessage() );
             return null;
         } catch (Exception sqlE) {
-            JOptionPane.showMessageDialog( null, "Exception:\n"+sqlE.getMessage() );
+            JOptionPane.showMessageDialog( null, "Def Tab Mod Cons>Exception:\n"+sqlE.getMessage() );
             return null;
         } finally {
             desconectar();            
@@ -187,10 +215,10 @@ public class BaseDatos {
             }
             return obj;
         } catch (SQLException sqlE) {
-            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+sqlE.getMessage() );
+            JOptionPane.showMessageDialog( null, "Map Con>SQL Exception\n: "+sqlE.getMessage() );
             return null;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Map Cons>Exception:\n"+e.getMessage() );
             return null;
         } finally {
             desconectar();            
@@ -210,10 +238,10 @@ public class BaseDatos {
             desconectar();
             return tupla;
         } catch (SQLException es) {
-            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+es.getMessage() );
+            JOptionPane.showMessageDialog( null, "ConsReg>SQL Exception\n: "+es.getMessage() );
             return null;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
+            JOptionPane.showMessageDialog( null, "ConsReg>Exception:\n"+e.getMessage() );
             return null;
         } finally {
             desconectar();
@@ -235,10 +263,10 @@ public class BaseDatos {
             desconectar();
             return tuplas;
         } catch (SQLException es) {
-            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+es.getMessage() );
+            JOptionPane.showMessageDialog( null, "ConsList>SQL Exception\n: "+es.getMessage() );
             return null;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
+            JOptionPane.showMessageDialog( null, "ConsList>Exception:\n"+e.getMessage() );
             return null;
         } finally {
             desconectar();
@@ -258,10 +286,54 @@ public class BaseDatos {
             desconectar();
             return consulta;
         } catch (SQLException es) {
-            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+es.getMessage() );
+            JOptionPane.showMessageDialog( null, "ConsCamp>SQL Exception\n: "+es.getMessage() );
             return null;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
+            JOptionPane.showMessageDialog( null, "ConsCamp>Exception:\n"+e.getMessage() );
+            return null;
+        } finally {
+            desconectar();
+        }       
+    }
+     public static Integer consultarCampoInt(String tabla, String campo, String llave,String valor) { 
+        String query = "SELECT "+campo+" FROM "+tabla+" WHERE "+llave+" = '"+valor+"'";
+        try {
+            Integer consulta = 0;
+            conectar();
+            stmt = con.createStatement();
+            rSet = stmt.executeQuery(query);
+            while (rSet.next()) {
+                consulta = rSet.getInt(campo);
+            }
+            desconectar();
+            return consulta;
+        } catch (SQLException es) {
+            JOptionPane.showMessageDialog( null, "Cons CampInt>SQL Exception\n: "+es.getMessage() );
+            return null;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog( null, "Cons CampInt>Exception:\n"+e.getMessage() );
+            return null;
+        } finally {
+            desconectar();
+        }       
+    }
+     public static Float consultarCampoFloat(String tabla, String campo, String llave,String valor) { 
+        String query = "SELECT "+campo+" FROM "+tabla+" WHERE "+llave+" = '"+valor+"'";
+        try {
+            Float consulta = null;
+            conectar();
+            stmt = con.createStatement();
+            rSet = stmt.executeQuery(query);
+            while (rSet.next()) {
+                consulta = rSet.getFloat(campo);
+            }
+            desconectar();
+            return consulta;
+        } catch (SQLException es) {
+            JOptionPane.showMessageDialog( null, "Cons ComapFl>SQL Exception\n: "+es.getMessage() );
+            return null;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog( null, "Cons CampFl>Exception:\n"+e.getMessage() );
             return null;
         } finally {
             desconectar();
@@ -275,10 +347,10 @@ public class BaseDatos {
             Integer res = stmt.executeUpdate("DELETE FROM "+tabla+" WHERE `"+nombreId+"` = '" + id + "'");
             return res;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Del>SQL Exception\n: "+e.getMessage() );
             return -1;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Del>Exception:\n"+e.getMessage() );
             return -2;
         } finally {
             desconectar();            
@@ -293,10 +365,10 @@ public class BaseDatos {
             int res = stmt.executeUpdate(updateStmt);
             return res;
         } catch (SQLException sqlE) {
-            JOptionPane.showMessageDialog( null, "SQL Exception\n: "+sqlE.getMessage() );
+            JOptionPane.showMessageDialog( null, "Up>SQL Exception\n: "+sqlE.getMessage() );
             return 0;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog( null, "Exception:\n"+e.getMessage() );
+            JOptionPane.showMessageDialog( null, "Up>Exception:\n"+e.getMessage() );
             return 0;
         }
     }
